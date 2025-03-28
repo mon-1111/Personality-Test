@@ -40,9 +40,22 @@ st.markdown(
     .stMarkdown, .stTitle, h1, h2, h3, h4, h5, h6 {
         color: black !important;
     }
+    
     </style>
     """,
     unsafe_allow_html=True
+    st.markdown(
+    """
+    <style>
+    /* Shift all content slightly to the right */
+    .stApp {
+        padding-left: 40px;  /* Adjust this number to move more or less */
+        padding-right: 40px;
+    }
+    </style>
+    """,
+    unsafe_allow_html=True
+)
 )
 
 # Load trained model and label encoder
