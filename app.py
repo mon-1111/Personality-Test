@@ -4,7 +4,7 @@ import pickle
 import base64
 
 # Step 1: Set the page config (this MUST be first)
-st.set_page_config(page_title="Spirit Animal Finder", page_icon="🐶", layout="centered")
+st.set_page_config(page_title="Spirit Animal Finder", page_icon="🐾", layout="centered")
 
 # Step 2: Function to set the background
 def set_background(image_path):
@@ -32,14 +32,20 @@ set_background("background.png")  # Replace with your actual file path
 st.markdown(
     """
     <style>
+    body {
+        color: #000000 !important;  /* Force text color to black */
+    }
     .stApp {
-        color: #000000;  /* Black text for better readability */
+        color: #000000 !important;
     }
     .stRadio > div > div {
-        color: #000000;  /* Ensure radio button labels are visible */
+        color: #000000 !important;  /* Make sure radio button labels are black */
     }
-    .stTitle, .stMarkdown {
-        color: #000000;  /* Ensure title and markdown text is visible */
+    .stTitle, .stMarkdown, .stButton {
+        color: #000000 !important;  /* Ensure title and markdown text is black */
+    }
+    .stRadio label {
+        color: #000000 !important;  /* Force radio button label text to be black */
     }
     </style>
     """, 
@@ -54,7 +60,7 @@ with open("label_encoder.pkl", "rb") as f:
     label_encoder = pickle.load(f)
 
 # Step 6: Streamlit app config
-st.title("🦊 Spirit Animal Finder")  # Updated the icon to the dog face
+st.title("🐾 Spirit Animal Finder")  # Updated the icon to the dog face
 st.markdown("Answer the 10 questions below to discover your spirit animal.")
 
 # List of questions and options
@@ -96,5 +102,5 @@ if st.button("Find My Spirit Animal 🐾"):
     prediction = model.predict(input_array)[0]
     predicted_animal = label_encoder.inverse_transform([prediction])[0]
 
-    st.success(f"🌟 Your Spirit Animal is: **{predicted_animal}**")
+    st.success(f"🦜 Your Spirit Animal is: **{predicted_animal}**")
     st.markdown(f"You share qualities with the **{predicted_animal}** — intuitive, driven, and deeply in tune with your inner world.")
