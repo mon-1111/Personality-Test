@@ -12,17 +12,20 @@ def set_background(image_path):
         data = f.read()
     encoded = base64.b64encode(data).decode()
     st.markdown(
-        f"""
-        <style>
-        .stApp {{
-            background-image: url("data:image/png;base64,{encoded}");
-            background-size: cover;
-            background-position: center;
-            background-attachment: fixed;
-        }}
-        </style>
-        """,
-        unsafe_allow_html=True
+    """
+    <style>
+    .stApp {
+        color: #333333;  /* Darker text color for better contrast */
+    }
+    .stRadio > div > div {
+        color: #333333;  /* Ensure radio button labels are also visible */
+    }
+    .stTitle, .stMarkdown {
+        color: #333333;  /* Ensure title and markdown text is visible */
+    }
+    </style>
+    """, 
+    unsafe_allow_html=True
     )
 
 # Step 3: Call the background function to set the background
