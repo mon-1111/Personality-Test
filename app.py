@@ -149,7 +149,7 @@ questions = [
     "By the fire, you open your journal. What do you write about?",
     "At the river crossing, what kind of boat is waiting for you?",
     "Another hiker smiles at you. How do you respond?",
-    "You reach a high ridge. What are you feeling?",
+    "You reach a hilltop. What are you feeling?",
     "As you lie quietly in your tent under the stars, what mental image drifts into your mind?",
     "As the journey ends, what do you take home with you?"
 ]
