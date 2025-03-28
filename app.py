@@ -64,6 +64,19 @@ with open("label_encoder.pkl", "rb") as f:
 st.markdown("""<h1 style='color:black;'>🐾 Spirit Animal Finder</h1>""", unsafe_allow_html=True)
 st.markdown("<p style='color:black;'>Answer the questions to discover your spirit animal.</p>", unsafe_allow_html=True)
 
+# Enneagram explanations
+enneagram_types = {
+    "1": "Type 1 – The Reformer: principled, purposeful, self-controlled.",
+    "2": "Type 2 – The Helper: caring, interpersonal, generous.",
+    "3": "Type 3 – The Achiever: success-oriented, adaptable, driven.",
+    "4": "Type 4 – The Individualist: sensitive, introspective, expressive.",
+    "5": "Type 5 – The Investigator: analytical, perceptive, private.",
+    "6": "Type 6 – The Loyalist: committed, security-oriented, responsible.",
+    "7": "Type 7 – The Enthusiast: spontaneous, versatile, optimistic.",
+    "8": "Type 8 – The Challenger: self-confident, decisive, powerful.",
+    "9": "Type 9 – The Peacemaker: easygoing, accommodating, reassuring."
+}
+
 # Animal profiles
 animal_profiles = {
     "Bear": {
@@ -160,7 +173,7 @@ options = [
     ["Blue — calm", "Gold — energized", "Green — peaceful", "Grey — introspective"],
     ["I read the manual and follow each step carefully", "I scan the pieces and start putting it together based on feel", "I try to follow the steps, but keep second-guessing myself", "I skip the instructions and rely on trial and error"],
     ["Something emotional", "Gratitude for nature", "A new idea", "Someone I care about"],
-    ["Small boat for one", "Sturdy rowboat", "Sailboat", "Large shared boat"],
+    ["Canoe for one", "Sturdy rowboat", "Sailboat", "Large shared boat"],
     ["Smile and walk on", "Short chat", "Ask and share stories", "Invite to walk with me"],
     ["Clarity and purpose", "Deep calm", "Desire to share", "Creative inspiration"],
     ["A distant light flickering in the darkness", "The subtle sound of footsteps — something approaches", "Leaves rustling in the breeze above you", "A mountain partially hidden behind the clouds"],
@@ -180,7 +193,7 @@ if st.session_state.current_q < len(questions):
         st.session_state.current_q += 1
         st.rerun()
 else:
-    st.markdown("### 🦜 You're almost there!")
+    st.markdown("### 🎉 You're almost there!")
     if st.button("Discover My Spirit Animal 🐾"):
         input_array = np.array([st.session_state.answers])
         prediction = model.predict(input_array)[0]
@@ -197,7 +210,10 @@ else:
             st.markdown(profile["description"], unsafe_allow_html=True)
             st.markdown(f"<br><strong>OCEAN Traits:</strong> {profile['ocean']}<br>", unsafe_allow_html=True)
             st.markdown(f"<strong>MBTI Match:</strong> {profile['mbti']}<br>", unsafe_allow_html=True)
-            st.markdown(f"<strong>Enneagram Type:</strong> {profile['enneagram']}</div>", unsafe_allow_html=True)
+
+            enneagram_parts = profile['enneagram'].split(" or ")
+            enneagram_explained = "<br>".join([f"{e}: {enneagram_types.get(e.strip(), '')}" for e in enneagram_parts])
+            st.markdown(f"<strong>Enneagram Type:</strong><br>{enneagram_explained}</div>", unsafe_allow_html=True)
 
     if st.button("Restart Quiz 🔄"):
         st.session_state.current_q = 0
