@@ -23,35 +23,37 @@ def set_background(image_path):
         </style>
         """,
         unsafe_allow_html=True
-    st.markdown(
-        """
-        <style>
-        .stApp {
-            color: #333333;  /* Darker text color for better contrast */
-        }
-        .stRadio > div > div {
-            color: #333333;  /* Ensure radio button labels are also visible */
-        }
-        .stTitle, .stMarkdown {
-            color: #333333;  /* Ensure title and markdown text is visible */
-        }
-        </style>
-        """, 
-        unsafe_allow_html=True
     )
-        
 
 # Step 3: Call the background function to set the background
 set_background("background.png")  # Replace with your actual file path
 
-# Step 4: Load trained model and label encoder
+# Step 4: Adjust the text color for better contrast
+st.markdown(
+    """
+    <style>
+    .stApp {
+        color: #333333;  /* Darker text color for better contrast */
+    }
+    .stRadio > div > div {
+        color: #333333;  /* Ensure radio button labels are also visible */
+    }
+    .stTitle, .stMarkdown {
+        color: #333333;  /* Ensure title and markdown text is visible */
+    }
+    </style>
+    """, 
+    unsafe_allow_html=True
+)
+
+# Step 5: Load trained model and label encoder
 with open("rf_model.pkl", "rb") as f:
     model = pickle.load(f)
 
 with open("label_encoder.pkl", "rb") as f:
     label_encoder = pickle.load(f)
 
-# Step 5: Streamlit app config
+# Step 6: Streamlit app config
 st.title("🧭 Spirit Animal Finder")
 st.markdown("Answer the 10 questions below to discover your spirit animal.")
 
@@ -82,13 +84,13 @@ options = [
     ["Inner strength", "Nature connection", "Inspiration", "Peace and gratitude"]
 ]
 
-# Step 6: Collect user input
+# Step 7: Collect user input
 answers = []
 for i, question in enumerate(questions):
     answer = st.radio(f"**Q{i+1}. {question}**", options[i], index=0, key=f"q{i+1}")
     answers.append(options[i].index(answer) + 1)  # Convert to 1–4
 
-# Step 7: Make prediction
+# Step 8: Make prediction
 if st.button("Find My Spirit Animal 🐾"):
     input_array = np.array([answers])
     prediction = model.predict(input_array)[0]
