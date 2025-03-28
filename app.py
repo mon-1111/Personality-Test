@@ -6,7 +6,7 @@ import base64
 # Page configuration
 st.set_page_config(page_title="Spirit Animal Finder", page_icon="🐾", layout="centered")
 
-# Background setup
+# Function to set background
 def set_background(image_path):
     with open(image_path, "rb") as f:
         data = f.read()
@@ -32,9 +32,10 @@ def set_background(image_path):
         unsafe_allow_html=True
     )
 
+# Set background image
 set_background("background.png")
 
-# Load model and encoder
+# Load model and label encoder
 with open("rf_model.pkl", "rb") as f:
     model = pickle.load(f)
 with open("label_encoder.pkl", "rb") as f:
@@ -71,24 +72,23 @@ options = [
     ["Inner strength", "Nature connection", "Inspiration", "Peace and gratitude"]
 ]
 
-# Initialize session state variables
+# Initialize session state
 if 'current_q' not in st.session_state:
     st.session_state.current_q = 0
     st.session_state.answers = []
 
-# Display one question at a time
+# Display questions one by one
 if st.session_state.current_q < len(questions):
     q_idx = st.session_state.current_q
     st.markdown(f"### Question {q_idx + 1} of {len(questions)}")
     answer = st.radio(questions[q_idx], options[q_idx], key=f"q{q_idx}")
 
     if st.button("Next"):
-        # Save answer and proceed
         st.session_state.answers.append(options[q_idx].index(answer) + 1)
         st.session_state.current_q += 1
-        st.experimental_rerun()
+        st.rerun()  # Corrected from experimental_rerun()
 
-# After all questions answered, make prediction
+# After last question
 else:
     st.markdown("### 🎉 You're almost there!")
     if st.button("Discover My Spirit Animal 🐾"):
@@ -102,4 +102,4 @@ else:
     if st.button("Restart Quiz 🔄"):
         st.session_state.current_q = 0
         st.session_state.answers = []
-        st.experimental_rerun()
+        st.rerun()  # Corrected from experimental_rerun()
