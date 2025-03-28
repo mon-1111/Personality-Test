@@ -20,7 +20,7 @@ def set_background(image_path):
             background-position: center;
             background-attachment: fixed;
         }}
-        div[class*="stRadio"] label, div[class*="stRadio"] div, .stMarkdown, .stTitle {{
+        div[class*="stRadio"] label, div[class*="stRadio"] div, .stMarkdown, .stTitle, .stHeading {{
             color: black !important;
         }}
         .stApp {{
@@ -42,8 +42,8 @@ with open("label_encoder.pkl", "rb") as f:
     label_encoder = pickle.load(f)
 
 # Title
-st.title("🐾 Spirit Animal Finder")
-st.markdown("Answer the questions to discover your spirit animal.")
+st.markdown("""<h1 style='color:black;'>🐾 Spirit Animal Finder</h1>""", unsafe_allow_html=True)
+st.markdown("<p style='color:black;'>Answer the questions to discover your spirit animal.</p>", unsafe_allow_html=True)
 
 # Animal personality profiles
 animal_profiles = {
