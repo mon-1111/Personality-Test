@@ -3,10 +3,10 @@ import numpy as np
 import pickle
 import base64
 
-# Page configuration (must be first)
+# Step 1: Page configuration (must be first)
 st.set_page_config(page_title="Spirit Animal Finder", page_icon="🐾", layout="centered")
 
-# Function to set background
+# Step 2: Background setting function
 def set_background(image_path):
     with open(image_path, "rb") as f:
         data = f.read()
@@ -25,10 +25,10 @@ def set_background(image_path):
         unsafe_allow_html=True
     )
 
-# Set your background
+# Step 3: Set background image
 set_background("background.png")
 
-# Corrected CSS (final fix: titles black too)
+# Step 4: CSS adjustments (text color black + content shifted to right)
 st.markdown(
     """
     <style>
@@ -40,35 +40,28 @@ st.markdown(
     .stMarkdown, .stTitle, h1, h2, h3, h4, h5, h6 {
         color: black !important;
     }
-    
-    </style>
-    """,
-    unsafe_allow_html=True
-    st.markdown(
-    """
-    <style>
-    /* Shift all content slightly to the right */
+    /* Shift content to the right */
     .stApp {
-        padding-left: 40px;  /* Adjust this number to move more or less */
-        padding-right: 40px;
+        padding-left: 50px;  
+        padding-right: 50px;
     }
     </style>
     """,
     unsafe_allow_html=True
 )
-)
 
-# Load trained model and label encoder
+# Step 5: Load your trained model and label encoder
 with open("rf_model.pkl", "rb") as f:
     model = pickle.load(f)
 
 with open("label_encoder.pkl", "rb") as f:
     label_encoder = pickle.load(f)
 
-# App title
+# Step 6: App title
 st.title("🐾 Spirit Animal Finder")
 st.markdown("Answer the 10 questions below to discover your spirit animal.")
 
+# List of questions and options
 questions = [
     "You begin your solo hike just after sunrise. What’s going through your head as you walk?",
     "You see a deer on the trail. What do you do?",
@@ -95,11 +88,13 @@ options = [
     ["Inner strength", "Nature connection", "Inspiration", "Peace and gratitude"]
 ]
 
+# Step 7: Collect user input from the radio buttons
 answers = []
 for i, question in enumerate(questions):
     answer = st.radio(f"**Q{i+1}. {question}**", options[i], index=0, key=f"q{i+1}")
     answers.append(options[i].index(answer) + 1)
 
+# Step 8: Make prediction and display result
 if st.button("Find My Spirit Animal 🐾"):
     input_array = np.array([answers])
     prediction = model.predict(input_array)[0]
