@@ -4,7 +4,7 @@ import pickle
 import base64
 
 # Step 1: Set the page config (this MUST be first)
-st.set_page_config(page_title="Spirit Animal Finder", page_icon="🐾", layout="centered")
+st.set_page_config(page_title="Spirit Animal Finder", page_icon="🐶", layout="centered")
 
 # Step 2: Function to set the background
 def set_background(image_path):
@@ -28,18 +28,18 @@ def set_background(image_path):
 # Step 3: Call the background function to set the background
 set_background("background.png")  # Replace with your actual file path
 
-# Step 4: Adjust the text color for better contrast
+# Step 4: Adjust the text color to black for better contrast
 st.markdown(
     """
     <style>
     .stApp {
-        color: #333333;  /* Darker text color for better contrast */
+        color: #000000;  /* Black text for better readability */
     }
     .stRadio > div > div {
-        color: #333333;  /* Ensure radio button labels are also visible */
+        color: #000000;  /* Ensure radio button labels are visible */
     }
     .stTitle, .stMarkdown {
-        color: #333333;  /* Ensure title and markdown text is visible */
+        color: #000000;  /* Ensure title and markdown text is visible */
     }
     </style>
     """, 
@@ -54,7 +54,7 @@ with open("label_encoder.pkl", "rb") as f:
     label_encoder = pickle.load(f)
 
 # Step 6: Streamlit app config
-st.title("🧭 Spirit Animal Finder")
+st.title("🦊 Spirit Animal Finder")  # Updated the icon to the dog face
 st.markdown("Answer the 10 questions below to discover your spirit animal.")
 
 # List of questions and options
