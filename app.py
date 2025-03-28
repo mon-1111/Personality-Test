@@ -39,13 +39,13 @@ st.markdown(
         color: #000000 !important;
     }
     .stRadio > div > div {
-        color: #000000 !important;  /* Ensure radio button labels are black */
-    }
-    .stTitle, .stMarkdown, .stButton {
-        color: #000000 !important;  /* Ensure title and markdown text is black */
+        color: #000000 !important;  /* Make sure radio button labels are black */
     }
     .stRadio label {
         color: #000000 !important;  /* Force radio button label text to be black */
+    }
+    .stTitle, .stMarkdown, .stButton {
+        color: #000000 !important;  /* Ensure title and markdown text is black */
     }
     </style>
     """, 
@@ -102,5 +102,5 @@ if st.button("Find My Spirit Animal 🐾"):
     prediction = model.predict(input_array)[0]
     predicted_animal = label_encoder.inverse_transform([prediction])[0]
 
-    st.success(f"🦜 Your Spirit Animal is: **{predicted_animal}**")
+    st.success(f"🌟 Your Spirit Animal is: **{predicted_animal}**")
     st.markdown(f"You share qualities with the **{predicted_animal}** — intuitive, driven, and deeply in tune with your inner world.")
