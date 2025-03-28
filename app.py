@@ -1,3 +1,25 @@
+set_background("background.png")
+import base64
+
+def set_background(image_path):
+    with open(image_path, "rb") as f:
+        data = f.read()
+    encoded = base64.b64encode(data).decode()
+    st.markdown(
+        f"""
+        <style>
+        .stApp {{
+            background-image: url("data:image/png;base64,{encoded}");
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+        }}
+        </style>
+        """,
+        unsafe_allow_html=True
+    )
+
+
 # Streamlit Spirit Animal Finder App (using trained Random Forest)
 
 import streamlit as st
