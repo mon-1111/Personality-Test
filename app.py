@@ -30,19 +30,21 @@ def set_background(image_path):
         }}
         .result-box {{
             background-color: rgba(255, 255, 255, 0.9);
-            padding: 1rem;
-            border-radius: 10px;
+            padding: 1.5rem;
+            border-radius: 12px;
             margin-top: 1rem;
             color: black;
         }}
-        .result-row {{
+        .result-layout {{
             display: flex;
+            flex-direction: column;
             align-items: center;
-            gap: 20px;
+            justify-content: center;
         }}
         .result-img {{
-            width: 250px;
+            max-width: 250px;
             border-radius: 10px;
+            margin-bottom: 1rem;
         }}
         </style>
         """,
@@ -62,7 +64,7 @@ with open("label_encoder.pkl", "rb") as f:
 st.markdown("""<h1 style='color:black;'>🐾 Spirit Animal Finder</h1>""", unsafe_allow_html=True)
 st.markdown("<p style='color:black;'>Answer the questions to discover your spirit animal.</p>", unsafe_allow_html=True)
 
-# Full profile information
+# Animal profiles
 animal_profiles = {
     "Bear": {
         "description": "You share qualities with the <strong>Bear</strong> — introspective, grounded, and protective. You thrive in calm, reflective environments and prefer solitude or deep one-on-one connections. You tend to think before acting and offer wisdom to others. You positively impact your world by providing emotional depth, quiet leadership, and a reliable presence.",
@@ -139,32 +141,8 @@ animal_profiles = {
 }
 
 # Questions and options
-questions = [
-    "You begin your solo hike just after sunrise. What’s going through your head as you walk?",
-    "You see a deer on the trail. What do you do?",
-    "You sit beside a river. What color do you see in the reflection?",
-    "You arrive at a clearing to set up camp. How do you go about it?",
-    "By the fire, you open your journal. What do you write about?",
-    "At the river crossing, what kind of boat is waiting for you?",
-    "Another hiker smiles at you. How do you respond?",
-    "You reach a high ridge. What are you feeling?",
-    "Lying in your tent, what image comes to mind first?",
-    "As the journey ends, what do you take home with you?"
-]
-
-
-options = [
-    ["Reviewing goals and plans", "Tuned into nature's sounds", "Reflecting on something emotional", "Enjoying the moment, not thinking much"],
-    ["Freeze and observe", "Take a photo", "Whisper something", "Step off the trail to give space"],
-    ["Blue — calm", "Gold — energized", "Green — peaceful", "Grey — introspective"],
-    ["Planned everything ahead", "Go with the flow", "Try but second-guess", "Hands-on improvisation"],
-    ["Something emotional", "Gratitude for nature", "A new idea", "Someone I care about"],
-    ["Canoe for one", "Sturdy rowboat", "Sailboat", "Large shared boat"],
-    ["Smile and walk on", "Short chat", "Ask and share stories", "Invite to walk with me"],
-    ["Clarity and purpose", "Deep calm", "Desire to share", "Creative inspiration"],
-    ["A distant light", "An approaching animal", "Swaying tree", "Mountain behind clouds"],
-    ["Inner strength", "Nature connection", "Inspiration", "Peace and gratitude"]
-]
+questions = [...]
+options = [...]
 
 if 'current_q' not in st.session_state:
     st.session_state.current_q = 0
@@ -189,10 +167,10 @@ else:
         image_path = f"images/{predicted_animal.lower()}.png"
 
         if profile:
-            st.markdown("<div class='result-box'>", unsafe_allow_html=True)
+            st.markdown("<div class='result-box result-layout'>", unsafe_allow_html=True)
             st.markdown(f"<h2 style='color:black;'>🌟 Your Spirit Animal is: {predicted_animal}</h2>", unsafe_allow_html=True)
             if os.path.exists(image_path):
-                st.image(image_path, width=250)
+                st.image(image_path, use_column_width=False, output_format="PNG")
             st.markdown(profile["description"], unsafe_allow_html=True)
             st.markdown(f"<br><strong>OCEAN Traits:</strong> {profile['ocean']}<br>", unsafe_allow_html=True)
             st.markdown(f"<strong>MBTI Match:</strong> {profile['mbti']}<br>", unsafe_allow_html=True)
