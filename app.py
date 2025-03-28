@@ -28,18 +28,16 @@ def set_background(image_path):
 # Set your background
 set_background("background.png")
 
-# Corrected CSS to make text black
+# Corrected CSS (final fix: titles black too)
 st.markdown(
     """
     <style>
-    /* Force ALL text to black, including radio buttons */
-    div[class*="stRadio"] label {
+    /* Make radio button labels and options black */
+    div[class*="stRadio"] label, div[class*="stRadio"] div {
         color: black !important;
     }
-    div[class*="stRadio"] div {
-        color: black !important;
-    }
-    .stMarkdown, .stTitle, .stTextInput, .stButton>button {
+    /* Make markdown and titles explicitly black */
+    .stMarkdown, .stTitle, h1, h2, h3, h4, h5, h6 {
         color: black !important;
     }
     </style>
@@ -54,7 +52,7 @@ with open("rf_model.pkl", "rb") as f:
 with open("label_encoder.pkl", "rb") as f:
     label_encoder = pickle.load(f)
 
-# Streamlit app layout
+# App title
 st.title("🐾 Spirit Animal Finder")
 st.markdown("Answer the 10 questions below to discover your spirit animal.")
 
