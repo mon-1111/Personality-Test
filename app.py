@@ -92,5 +92,5 @@ if st.button("Find My Spirit Animal 🐾"):
     prediction = model.predict(input_array)[0]
     predicted_animal = label_encoder.inverse_transform([prediction])[0]
 
-    st.success(f"🌟 Your Spirit Animal is: **{predicted_animal}**")
+    st.success(f"🦜 Your Spirit Animal is: **{predicted_animal}**")
     st.markdown(f"You share qualities with the **{predicted_animal}** — intuitive, driven, and deeply in tune with your inner world.")
