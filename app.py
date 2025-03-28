@@ -180,7 +180,7 @@ if st.session_state.current_q < len(questions):
         st.session_state.current_q += 1
         st.rerun()
 else:
-    st.markdown("### 🎉 You're almost there!")
+    st.markdown("### 🦜 You're almost there!")
     if st.button("Discover My Spirit Animal 🐾"):
         input_array = np.array([st.session_state.answers])
         prediction = model.predict(input_array)[0]
