@@ -39,7 +39,7 @@ st.markdown(
         color: #000000 !important;
     }
     .stRadio > div > div {
-        color: #000000 !important;  /* Make sure radio button labels are black */
+        color: #000000 !important;  /* Ensure radio button labels are black */
     }
     .stTitle, .stMarkdown, .stButton {
         color: #000000 !important;  /* Ensure title and markdown text is black */
