@@ -141,8 +141,31 @@ animal_profiles = {
 }
 
 # Questions and options
-questions = [...]
-options = [...]
+questions = [
+    "You begin your solo hike just after sunrise. What’s going through your head as you walk?",
+    "You see a deer on the trail. What do you do?",
+    "You sit beside a river. What color do you see in the reflection?",
+    "You arrive at a clearing to set up camp. How do you go about it?",
+    "By the fire, you open your journal. What do you write about?",
+    "At the river crossing, what kind of boat is waiting for you?",
+    "Another hiker smiles at you. How do you respond?",
+    "You reach a high ridge. What are you feeling?",
+    "Lying in your tent, what image comes to mind first?",
+    "As the journey ends, what do you take home with you?"
+]
+
+options = [
+    ["Reviewing goals and plans", "Tuned into nature's sounds", "Reflecting on something emotional", "Enjoying the moment, not thinking much"],
+    ["Freeze and observe", "Take a photo", "Whisper something", "Step off the trail to give space"],
+    ["Blue — calm", "Gold — energized", "Green — peaceful", "Grey — introspective"],
+    ["Planned everything ahead", "Go with the flow", "Try but second-guess", "Hands-on improvisation"],
+    ["Something emotional", "Gratitude for nature", "A new idea", "Someone I care about"],
+    ["Canoe for one", "Sturdy rowboat", "Sailboat", "Large shared boat"],
+    ["Smile and walk on", "Short chat", "Ask and share stories", "Invite to walk with me"],
+    ["Clarity and purpose", "Deep calm", "Desire to share", "Creative inspiration"],
+    ["A distant light", "An approaching animal", "Swaying tree", "Mountain behind clouds"],
+    ["Inner strength", "Nature connection", "Inspiration", "Peace and gratitude"]
+]
 
 if 'current_q' not in st.session_state:
     st.session_state.current_q = 0
