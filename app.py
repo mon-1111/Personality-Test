@@ -193,7 +193,7 @@ else:
             st.markdown("<div class='result-box result-layout'>", unsafe_allow_html=True)
             st.markdown(f"<h2 style='color:black;'>🌟 Your Spirit Animal is: {predicted_animal}</h2>", unsafe_allow_html=True)
             if os.path.exists(image_path):
-                st.image(image_path, use_column_width=False, output_format="PNG")
+                st.image(image_path, width=250)
             st.markdown(profile["description"], unsafe_allow_html=True)
             st.markdown(f"<br><strong>OCEAN Traits:</strong> {profile['ocean']}<br>", unsafe_allow_html=True)
             st.markdown(f"<strong>MBTI Match:</strong> {profile['mbti']}<br>", unsafe_allow_html=True)
