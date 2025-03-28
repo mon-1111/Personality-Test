@@ -3,10 +3,10 @@ import numpy as np
 import pickle
 import base64
 
-# Step 1: Set the page config (this MUST be first)
+# Page configuration (must be first)
 st.set_page_config(page_title="Spirit Animal Finder", page_icon="🐾", layout="centered")
 
-# Step 2: Function to set the background
+# Function to set background
 def set_background(image_path):
     with open(image_path, "rb") as f:
         data = f.read()
@@ -25,45 +25,39 @@ def set_background(image_path):
         unsafe_allow_html=True
     )
 
-# Step 3: Call the background function to set the background
-set_background("background.png")  # Replace with your actual file path
+# Set your background
+set_background("background.png")
 
-# Step 4: Adjust the text color to black for better contrast
+# Corrected CSS to make text black
 st.markdown(
     """
     <style>
-    body {
-        color: #000000 !important;  /* Force text color to black */
+    /* Force ALL text to black, including radio buttons */
+    div[class*="stRadio"] label {
+        color: black !important;
     }
-    .stApp {
-        color: #000000 !important;
+    div[class*="stRadio"] div {
+        color: black !important;
     }
-    .stRadio > div > div {
-        color: #000000 !important;  /* Make sure radio button labels are black */
-    }
-    .stRadio label {
-        color: #000000 !important;  /* Force radio button label text to be black */
-    }
-    .stTitle, .stMarkdown, .stButton {
-        color: #000000 !important;  /* Ensure title and markdown text is black */
+    .stMarkdown, .stTitle, .stTextInput, .stButton>button {
+        color: black !important;
     }
     </style>
-    """, 
+    """,
     unsafe_allow_html=True
 )
 
-# Step 5: Load trained model and label encoder
+# Load trained model and label encoder
 with open("rf_model.pkl", "rb") as f:
     model = pickle.load(f)
 
 with open("label_encoder.pkl", "rb") as f:
     label_encoder = pickle.load(f)
 
-# Step 6: Streamlit app config
-st.title("🐾 Spirit Animal Finder")  # Updated the icon to the dog face
+# Streamlit app layout
+st.title("🐾 Spirit Animal Finder")
 st.markdown("Answer the 10 questions below to discover your spirit animal.")
 
-# List of questions and options
 questions = [
     "You begin your solo hike just after sunrise. What’s going through your head as you walk?",
     "You see a deer on the trail. What do you do?",
@@ -90,13 +84,11 @@ options = [
     ["Inner strength", "Nature connection", "Inspiration", "Peace and gratitude"]
 ]
 
-# Step 7: Collect user input
 answers = []
 for i, question in enumerate(questions):
     answer = st.radio(f"**Q{i+1}. {question}**", options[i], index=0, key=f"q{i+1}")
-    answers.append(options[i].index(answer) + 1)  # Convert to 1–4
+    answers.append(options[i].index(answer) + 1)
 
-# Step 8: Make prediction
 if st.button("Find My Spirit Animal 🐾"):
     input_array = np.array([answers])
     prediction = model.predict(input_array)[0]
