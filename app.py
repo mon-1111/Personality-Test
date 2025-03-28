@@ -2,6 +2,7 @@ import streamlit as st
 import numpy as np
 import pickle
 import base64
+import os
 
 # Page configuration
 st.set_page_config(page_title="Spirit Animal Finder", page_icon="🐾", layout="centered")
@@ -27,6 +28,13 @@ def set_background(image_path):
             padding-left: 50px;  
             padding-right: 50px;
         }}
+        .result-box {{
+            background-color: rgba(255, 255, 255, 0.8);
+            padding: 1rem;
+            border-radius: 10px;
+            margin-top: 1rem;
+            color: black;
+        }}
         </style>
         """,
         unsafe_allow_html=True
@@ -47,30 +55,18 @@ st.markdown("<p style='color:black;'>Answer the questions to discover your spiri
 
 # Animal personality profiles
 animal_profiles = {
-    "Bear": """You share qualities with the **Bear** — characterized by high Introversion (OCEAN), introspection, and thoughtfulness. 
-    Often aligning with INFJ or INTJ (MBTI), you have deep inner wisdom and emotional intuition, reflecting Enneagram types 4 or 5, known for their profound emotional depth and analytical thinking.""",
-
-    "Cat": """You align closely with the **Cat** — independent, observant, and adaptable. In OCEAN, you exhibit higher Openness and moderate Introversion. Typically resembling ISFP or INTP (MBTI), your traits match Enneagram type 5 or 9, driven by a desire for peace and knowledge.""",
-
-    "Dolphin": """You resonate with the **Dolphin** — energetic, outgoing, and social. High in Extraversion and Agreeableness (OCEAN), you often reflect ESFP or ENFP (MBTI) personality types. Your playful and empathetic nature aligns closely with Enneagram types 2 or 7.""",
-
-    "Elephant": """You match the **Elephant** — wise, cooperative, and empathetic. Exhibiting high Agreeableness and Conscientiousness (OCEAN), your personality aligns closely with ISFJ or ESFJ (MBTI). You often reflect Enneagram types 2 or 6, highlighting loyalty and helpfulness.""",
-
-    "Fox": """You share traits with the **Fox** — clever, resourceful, and adaptable. Typically high in Openness and Conscientiousness (OCEAN), aligning with ENTP or INTJ (MBTI). Your dynamic, strategic personality aligns with Enneagram types 3 or 5.""",
-
-    "Lion": """You embody the **Lion** — confident, assertive, and natural leader. High in Extraversion and low Neuroticism (OCEAN), typically matching ENTJ or ESTJ (MBTI). Your assertive and ambitious personality aligns closely with Enneagram types 3 or 8.""",
-
-    "Owl": """You match the **Owl** — analytical, wise, and introspective. High Openness and Introversion (OCEAN), resembling INTP or INTJ (MBTI). Known for intellectual curiosity and independent thinking, often aligning with Enneagram type 5.""",
-
-    "Parrot": """You align with the **Parrot** — expressive, enthusiastic, and sociable. Highly Extraverted and Open (OCEAN), often resembling ESFP or ENFP (MBTI). You are cheerful and expressive, aligning closely with Enneagram types 7 or 2.""",
-
-    "Snake": """You share traits with the **Snake** — intuitive, calm, and mysterious. You exhibit higher Introversion, moderate Openness, and emotional stability (OCEAN). Typically INFJ or INFP (MBTI), aligning strongly with Enneagram type 4, reflecting emotional depth and introspection.""",
-
-    "Tiger": """You resonate with the **Tiger** — brave, dynamic, and assertive. High in Extraversion, moderate Neuroticism (OCEAN), closely matching ESTP or ENFP (MBTI). Energetic and action-oriented, aligning closely with Enneagram types 7 or 8.""",
-
-    "Turtle": """You identify with the **Turtle** — calm, patient, and resilient. Exhibiting high Agreeableness, low Extraversion (OCEAN), typically matching ISFJ or ISTJ (MBTI). You often align with Enneagram type 9, seeking harmony and steadiness.""",
-
-    "Wolf": """You reflect qualities of the **Wolf** — loyal, intuitive, and community-oriented. Balanced Extraversion and Agreeableness (OCEAN), often INFJ or ENFJ (MBTI). You resonate deeply with Enneagram types 6 or 9, focused on trust, loyalty, and group harmony."""
+    "Bear": "You share qualities with the <strong>Bear</strong> — introspective, grounded, and protective. You thrive in calm, reflective environments and prefer solitude or deep one-on-one connections. You tend to think before acting and offer wisdom to others. You positively impact your world by providing emotional depth, quiet leadership, and a reliable presence.",
+    "Cat": "You align with the <strong>Cat</strong> — independent, curious, and highly perceptive. You thrive when given freedom and space, and you prefer doing things in your own unique way. You tend to quietly observe before engaging and positively impact others by modeling authenticity, insight, and quiet resilience.",
+    "Dolphin": "You resonate with the <strong>Dolphin</strong> — playful, empathetic, and social. You thrive in group settings and prefer uplifting, meaningful interactions. You tend to bring people together and lighten the mood. You positively impact others by spreading joy, empathy, and creative energy.",
+    "Elephant": "You reflect the <strong>Elephant</strong> — wise, nurturing, and loyal. You thrive in structured, value-based environments and prefer taking care of others and being part of a close-knit group. You tend to lead with quiet strength and positively impact the world by being dependable and emotionally intelligent.",
+    "Fox": "You embody the <strong>Fox</strong> — clever, quick-witted, and adaptable. You thrive in fast-paced environments and prefer to stay ahead of the curve. You tend to think on your feet and positively impact others by offering solutions, strategy, and creative insight.",
+    "Lion": "You are the <strong>Lion</strong> — courageous, strong, and born to lead. You thrive in situations where bold decisions are needed and prefer to take initiative. You tend to inspire others through confidence and vision. You positively impact others by leading with integrity and bravery.",
+    "Owl": "You connect with the <strong>Owl</strong> — wise, observant, and thoughtful. You thrive in intellectual and philosophical spaces and prefer deep conversations over small talk. You tend to seek truth and knowledge. You positively impact others by offering insight, perspective, and clarity.",
+    "Parrot": "You align with the <strong>Parrot</strong> — expressive, social, and enthusiastic. You thrive in vibrant environments and prefer to be surrounded by people and ideas. You tend to uplift those around you and positively impact others with your energy, humor, and optimism.",
+    "Snake": "You share traits with the <strong>Snake</strong> — intuitive, calm, and transformative. You thrive in introspective and emotionally rich environments and prefer deep reflection. You tend to sense what others miss and positively impact others by encouraging healing, transformation, and growth.",
+    "Tiger": "You resonate with the <strong>Tiger</strong> — fierce, passionate, and bold. You thrive in high-energy settings and prefer to chase goals fearlessly. You tend to act decisively and inspire with intensity. You positively impact others through your strength, determination, and fearlessness.",
+    "Turtle": "You identify with the <strong>Turtle</strong> — patient, wise, and grounded. You thrive in peaceful, steady environments and prefer a slower, thoughtful pace. You tend to be a grounding presence. You positively impact others through stability, calm, and timeless wisdom.",
+    "Wolf": "You reflect the <strong>Wolf</strong> — loyal, intuitive, and community-focused. You thrive in strong, supportive networks and prefer meaningful collaboration. You tend to sense emotional dynamics well. You positively impact others by fostering connection, loyalty, and collective strength."
 }
 
 # Questions and options
@@ -122,10 +118,14 @@ else:
         prediction = model.predict(input_array)[0]
         predicted_animal = label_encoder.inverse_transform([prediction])[0]
 
-        st.success(f"🌟 Your Spirit Animal is: **{predicted_animal}**")
+        image_path = f"images/{predicted_animal.lower()}.png"
+        st.markdown(f"<div class='result-box'><strong>🌟 Your Spirit Animal is: <span style='color:black'>{predicted_animal}</span></strong></div>", unsafe_allow_html=True)
+
+        if os.path.exists(image_path):
+            st.image(image_path, width=300)
 
         message = animal_profiles.get(predicted_animal, "You have a unique spirit!")
-        st.markdown(message)
+        st.markdown(f"<div class='result-box'>{message}</div>", unsafe_allow_html=True)
 
     if st.button("Restart Quiz 🔄"):
         st.session_state.current_q = 0
