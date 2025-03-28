@@ -1,105 +1,67 @@
 import streamlit as st
-import numpy as np
-import pickle
-import base64
 
-# Page configuration
-st.set_page_config(page_title="Spirit Animal Finder", page_icon="🐾", layout="centered")
+st.set_page_config(page_title="Spirit Animal Finder", layout="centered")
 
-# Function to set background
-def set_background(image_path):
-    with open(image_path, "rb") as f:
-        data = f.read()
-    encoded = base64.b64encode(data).decode()
-    st.markdown(
-        f"""
-        <style>
-        .stApp {{
-            background-image: url("data:image/png;base64,{encoded}");
-            background-size: cover;
-            background-position: center;
-            background-attachment: fixed;
-        }}
-        div[class*="stRadio"] label, div[class*="stRadio"] div, .stMarkdown, .stTitle {{
-            color: black !important;
-        }}
-        .stApp {{
-            padding-left: 50px;  
-            padding-right: 50px;
-        }}
-        </style>
-        """,
-        unsafe_allow_html=True
-    )
+# Spirit animal descriptions
+animal_traits = {
+    "Wolf": "loyal, instinctive, and thrives in both solitude and community.",
+    "Owl": "wise, perceptive, and drawn to deep knowledge and mysteries.",
+    "Dolphin": "playful, empathetic, and deeply connected to social bonds.",
+    "Lion": "courageous, confident, and a natural leader.",
+    "Butterfly": "transformative, adaptable, and embraces change with grace.",
+    "Bear": "strong, protective, and deeply introspective.",
+    "Fox": "clever, agile, and always thinking three steps ahead.",
+    "Elephant": "gentle, strong, and values deep connections and memories.",
+    "Snake": "intuitive, driven, and deeply in tune with your inner world.",
+    "Deer": "sensitive, graceful, and guided by compassion.",
+    "Tiger": "fierce, passionate, and unafraid of challenges.",
+    "Turtle": "wise, patient, and carries a deep sense of inner peace."
+}
 
-# Set background image
-set_background("background.png")
+# Styling
+st.markdown(
+    """
+    <style>
+    h1, .spirit-result {
+        color: black !important;
+    }
+    .result-box {
+        background-color: #d3f2dd;
+        padding: 1rem;
+        border-radius: 0.5rem;
+        margin-top: 1rem;
+    }
+    </style>
+    """,
+    unsafe_allow_html=True
+)
 
-# Load model and label encoder
-with open("rf_model.pkl", "rb") as f:
-    model = pickle.load(f)
-with open("label_encoder.pkl", "rb") as f:
-    label_encoder = pickle.load(f)
+# App Title
+st.markdown("<h1 class='title'>🐾 Spirit Animal Finder</h1>", unsafe_allow_html=True)
+st.write("Answer the questions to discover your spirit animal.")
 
-# Title
-st.title("🐾 Spirit Animal Finder")
-st.markdown("Answer the questions to discover your spirit animal.")
-
-# Questions and options
-questions = [
-    "You begin your solo hike just after sunrise. What’s going through your head as you walk?",
-    "You see a deer on the trail. What do you do?",
-    "You sit beside a river. What color do you see in the reflection?",
-    "You arrive at a clearing to set up camp. How do you go about it?",
-    "By the fire, you open your journal. What do you write about?",
-    "At the river crossing, what kind of boat is waiting for you?",
-    "Another hiker smiles at you. How do you respond?",
-    "You reach a high ridge. What are you feeling?",
-    "Lying in your tent, what image comes to mind first?",
-    "As the journey ends, what do you take home with you?"
-]
-
-options = [
-    ["Reviewing goals and plans", "Tuned into nature's sounds", "Reflecting on something emotional", "Enjoying the moment, not thinking much"],
-    ["Freeze and observe", "Take a photo", "Whisper something", "Step off the trail to give space"],
-    ["Blue — calm", "Gold — energized", "Green — peaceful", "Grey — introspective"],
-    ["Planned everything ahead", "Go with the flow", "Try but second-guess", "Hands-on improvisation"],
-    ["Something emotional", "Gratitude for nature", "A new idea", "Someone I care about"],
-    ["Canoe for one", "Sturdy rowboat", "Sailboat", "Large shared boat"],
-    ["Smile and walk on", "Short chat", "Ask and share stories", "Invite to walk with me"],
-    ["Clarity and purpose", "Deep calm", "Desire to share", "Creative inspiration"],
-    ["A distant light", "An approaching animal", "Swaying tree", "Mountain behind clouds"],
-    ["Inner strength", "Nature connection", "Inspiration", "Peace and gratitude"]
-]
-
-# Initialize session state
-if 'current_q' not in st.session_state:
-    st.session_state.current_q = 0
+# Placeholder for questions (this is a mockup — integrate your actual questions here)
+if "answers" not in st.session_state:
     st.session_state.answers = []
 
-# Display questions one by one
-if st.session_state.current_q < len(questions):
-    q_idx = st.session_state.current_q
-    st.markdown(f"### Question {q_idx + 1} of {len(questions)}")
-    answer = st.radio(questions[q_idx], options[q_idx], key=f"q{q_idx}")
+# Simulated final step
+st.markdown("### 🎉 You're almost there!")
 
-    if st.button("Next"):
-        st.session_state.answers.append(options[q_idx].index(answer) + 1)
-        st.session_state.current_q += 1
-        st.rerun()  # Corrected from experimental_rerun()
+if st.button("Discover My Spirit Animal 🐾"):
+    # This is where your scoring logic goes; here we pick a random animal
+    import random
+    spirit_animal = random.choice(list(animal_traits.keys()))
+    st.session_state.spirit_animal = spirit_animal
 
-# After last question
-else:
-    st.markdown("### 🎉 You're almost there!")
-    if st.button("Discover My Spirit Animal 🐾"):
-        input_array = np.array([st.session_state.answers])
-        prediction = model.predict(input_array)[0]
-        predicted_animal = label_encoder.inverse_transform([prediction])[0]
+if "spirit_animal" in st.session_state:
+    animal = st.session_state.spirit_animal
+    traits = animal_traits[animal]
 
-        st.success(f"🌟 Your Spirit Animal is: **{predicted_animal}**")
-        st.markdown(f"You share qualities with the **{predicted_animal}** — intuitive, driven, and deeply in tune with your inner world.")
+    st.markdown(f"""
+    <div class='result-box'>
+        <span class='spirit-result'>🌟 <strong>Your Spirit Animal is: <span style='color:black'>{animal}</span></strong></span><br><br>
+        You share qualities with the <strong>{animal}</strong> — {traits}
+    </div>
+    """, unsafe_allow_html=True)
 
-    if st.button("Restart Quiz 🔄"):
-        st.session_state.current_q = 0
-        st.session_state.answers = []
-        st.rerun()  # Corrected from experimental_rerun()
+    st.button("Restart Quiz 🔁", on_click=lambda: st.session_state.clear())
