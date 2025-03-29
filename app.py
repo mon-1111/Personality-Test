@@ -5,7 +5,7 @@ import base64
 import os
 
 # Page configuration
-st.set_page_config(page_title="Spirit Animal Finder", page_icon="🐾", layout="centered")
+st.set_page_config(page_title="What's your spirit animal?", page_icon="🐾", layout="centered")
 
 # Function to set background
 def set_background(image_path):
