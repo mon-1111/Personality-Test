@@ -203,7 +203,20 @@ options = [
     ["A distant light flickering in the darkness", "The subtle sound of footsteps — something approaches", "Leaves rustling in the breeze above you", "A mountain partially hidden behind the clouds"],
     ["Inner strength", "Nature connection", "Inspiration", "Peace and gratitude"]
 ]
+    if 'current_q' not in st.session_state:
+    st.session_state.current_q = 0
+    st.session_state.answers = []
 
+    if st.session_state.current_q < len(questions):
+    q_idx = st.session_state.current_q
+    st.markdown(f"### Question {q_idx + 1} of {len(questions)}")
+    answer = st.radio(questions[q_idx], options[q_idx], key=f"q{q_idx}")
+    if st.button("Next"):
+        st.session_state.answers.append(options[q_idx].index(answer) + 1)
+        st.session_state.current_q += 1
+        st.rerun()
+    else:
+        st.markdown("### 🌿 You're almost there!")
     if st.button("Discover My Spirit Animal 🐾"):
         input_array = np.array([st.session_state.answers])
         prediction = model.predict(input_array)[0]
