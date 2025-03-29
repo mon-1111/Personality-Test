@@ -3,6 +3,8 @@ import numpy as np
 import pickle
 import base64
 import os
+from PIL import Image, ImageDraw, ImageFont
+import io
 
 # Page configuration
 st.set_page_config(page_title="What's your spirit animal?", page_icon="🐾", layout="centered")
@@ -45,6 +47,46 @@ with open("label_encoder.pkl", "rb") as f:
 # Title
 st.markdown("""<h1 style='color:black;'>🐾 What's your spirit animal?</h1>""", unsafe_allow_html=True)
 st.markdown("<p style='color:black;'>Answer the questions to discover your spirit animal.</p>", unsafe_allow_html=True)
+
+# Enneagram explanations
+enneagram_types = {
+    "1": "Type 1 – The Reformer: principled, purposeful, self-controlled.",
+    "2": "Type 2 – The Helper: caring, interpersonal, generous.",
+    "3": "Type 3 – The Achiever: success-oriented, adaptable, driven.",
+    "4": "Type 4 – The Individualist: sensitive, introspective, expressive.",
+    "5": "Type 5 – The Investigator: analytical, perceptive, private.",
+    "6": "Type 6 – The Loyalist: committed, security-oriented, responsible.",
+    "7": "Type 7 – The Enthusiast: spontaneous, versatile, optimistic.",
+    "8": "Type 8 – The Challenger: self-confident, decisive, powerful.",
+    "9": "Type 9 – The Peacemaker: easygoing, accommodating, reassuring."
+}
+
+# Function to generate result image
+def generate_result_image(animal_name, description, ocean, mbti, enneagram_text, image_path):
+    width, height = 800, 600
+    img = Image.new("RGB", (width, height), color="white")
+    draw = ImageDraw.Draw(img)
+    animal_img = Image.open(image_path).resize((180, 180))
+    img.paste(animal_img, (50, 50))
+
+    try:
+        font_title = ImageFont.truetype("arial.ttf", 28)
+        font_body = ImageFont.truetype("arial.ttf", 20)
+    except:
+        font_title = font_body = None
+
+    draw.text((250, 40), f"Your Spirit Animal is: {animal_name}", fill="black", font=font_title)
+    draw.text((250, 90), description[:300], fill="black", font=font_body)
+    draw.text((50, 260), f"OCEAN Traits: {ocean}", fill="black", font=font_body)
+    draw.text((50, 290), f"MBTI Match: {mbti}", fill="black", font=font_body)
+    draw.text((50, 320), "Enneagram Type:", fill="black", font=font_body)
+
+    y = 350
+    for line in enneagram_text.splitlines():
+        draw.text((70, y), f"- {line}", fill="black", font=font_body)
+        y += 25
+
+    return img
 
 # Enneagram explanations
 enneagram_types = {
@@ -162,20 +204,6 @@ options = [
     ["Inner strength", "Nature connection", "Inspiration", "Peace and gratitude"]
 ]
 
-if 'current_q' not in st.session_state:
-    st.session_state.current_q = 0
-    st.session_state.answers = []
-
-if st.session_state.current_q < len(questions):
-    q_idx = st.session_state.current_q
-    st.markdown(f"### Question {q_idx + 1} of {len(questions)}")
-    answer = st.radio(questions[q_idx], options[q_idx], key=f"q{q_idx}")
-    if st.button("Next"):
-        st.session_state.answers.append(options[q_idx].index(answer) + 1)
-        st.session_state.current_q += 1
-        st.rerun()
-else:
-    st.markdown("### 🌿 You're almost there!")
     if st.button("Discover My Spirit Animal 🐾"):
         input_array = np.array([st.session_state.answers])
         prediction = model.predict(input_array)[0]
@@ -208,7 +236,21 @@ else:
             """
             st.markdown(result_html, unsafe_allow_html=True)
 
-    if st.button("Restart Quiz 🔄"):
-        st.session_state.current_q = 0
-        st.session_state.answers = []
-        st.rerun()
+            result_img = generate_result_image(
+                predicted_animal,
+                profile["description"].replace("<strong>", "").replace("</strong>", ""),
+                profile["ocean"],
+                profile["mbti"],
+                enneagram_explained.replace("<br>", "\n"),
+                image_path
+            )
+            buf = io.BytesIO()
+            result_img.save(buf, format="PNG")
+            byte_im = buf.getvalue()
+
+            st.download_button(
+                label="🖼️ Download Result as Image",
+                data=byte_im,
+                file_name=f"{predicted_animal}_spirit_result.png",
+                mime="image/png"
+            )
