@@ -155,7 +155,7 @@ options = [
     ["Blue — calm", "Gold — energized", "Green — peaceful", "Grey — introspective"],
     ["I read the manual and follow each step carefully", "I scan the pieces and start putting it together based on feel", "I try to follow the steps, but keep second-guessing myself", "I skip the instructions and rely on trial and error"],
     ["Something emotional", "Gratitude for nature", "A new idea", "Someone I care about"],
-    ["Canoe for one", "Sturdy rowboat", "Sailboat", "Large shared boat"],
+    ["Small boat for one", "Sturdy rowboat", "Sailboat", "Large shared boat"],
     ["Smile and walk on", "Short chat", "Ask and share stories", "Invite to walk with me"],
     ["Clarity and purpose", "Deep calm", "Desire to share", "Creative inspiration"],
     ["A distant light flickering in the darkness", "The subtle sound of footsteps — something approaches", "Leaves rustling in the breeze above you", "A mountain partially hidden behind the clouds"],
