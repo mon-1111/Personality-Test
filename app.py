@@ -208,7 +208,7 @@ else:
             if os.path.exists(image_path):
                 with open(image_path, "rb") as img_file:
                     encoded_img = base64.b64encode(img_file.read()).decode()
-                    img_html = f"<img src='data:image/png;base64,{encoded_img}' style="width:220px; border-radius:10px; margin-bottom:1rem;" />"
+                    img_html = f"<img src='data:image/png;base64,{encoded_img}' style='width:220px; border-radius:10px; margin-bottom:1rem;'/>"
 
             enneagram_parts = profile['enneagram'].split(" or ")
             enneagram_explained = "<br>".join([f"{enneagram_types.get(e.strip(), '')}" for e in enneagram_parts])
