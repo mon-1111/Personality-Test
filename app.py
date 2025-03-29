@@ -28,20 +28,6 @@ def set_background(image_path):
             padding-left: 50px;  
             padding-right: 50px;
         }}
-        .result-box {{
-            background-color: rgba(255, 255, 255, 0.9);
-            padding: 1.5rem;
-            border-radius: 12px;
-            margin-top: 1rem;
-            color: black;
-            text-align: center;
-        }}
-        .result-layout {{
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-        }}
         </style>
         """,
         unsafe_allow_html=True
@@ -199,28 +185,28 @@ else:
         image_path = f"images/{predicted_animal.lower()}.png"
 
         if profile:
-            img_html = ""
-            if os.path.exists(image_path):
-                with open(image_path, "rb") as img_file:
-                    encoded_img = base64.b64encode(img_file.read()).decode()
+            with open(image_path, "rb") as img_file:
+                encoded_img = base64.b64encode(img_file.read()).decode()
 
             enneagram_parts = profile['enneagram'].split(" or ")
             enneagram_explained = "<br>".join([f"{enneagram_types.get(e.strip(), '')}" for e in enneagram_parts])
 
-            content = f"""
-            <div class='result-box'>
-                <h2 style='color:black;'>🌟 Your Spirit Animal is: {predicted_animal}</h2>
-                <div style="display: flex; align-items: center; gap: 2rem; flex-wrap: wrap; justify-content: center;">
-                    <img src='data:image/png;base64,{encoded_img}' style='width:220px; border-radius:10px;'/>
-                    <div style='flex: 1; min-width: 250px; text-align: left;'>{profile['description']}</div>
+            result_html = f"""
+            <h2 style='color:black;'>🌟 Your Spirit Animal is: {predicted_animal}</h2>
+            <div style="display: flex; align-items: center; gap: 2rem; flex-wrap: wrap; justify-content: flex-start;">
+                <img src="data:image/png;base64,{encoded_img}" style="width:220px; border-radius:10px;" />
+                <div style="flex: 1; min-width: 250px; text-align: left;">
+                    {profile['description']}
                 </div>
-                <br>
+            </div>
+            <br>
+            <div style="text-align: left;">
                 <strong>OCEAN Traits:</strong> {profile['ocean']}<br>
                 <strong>MBTI Match:</strong> {profile['mbti']}<br>
                 <strong>Enneagram Type:</strong><br>{enneagram_explained}
             </div>
             """
-            st.markdown(content, unsafe_allow_html=True)
+            st.markdown(result_html, unsafe_allow_html=True)
 
     if st.button("Restart Quiz 🔄"):
         st.session_state.current_q = 0
