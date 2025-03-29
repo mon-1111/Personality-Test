@@ -18,9 +18,11 @@ def set_background(image_path):
         <style>
         .stApp {{
             background-image: url("data:image/png;base64,{encoded}");
-            background-size: cover;
-            background-position: center;
-            background-attachment: fixed;
+            background-size: contain;
+            background-position: top center;
+            background-repeat: no-repeat;
+            background-attachment: scroll;
+            min-height: 100vh;
             padding-left: 50px;
             padding-right: 50px;
         }}
@@ -31,6 +33,7 @@ def set_background(image_path):
 
         @media (max-width: 768px) {{
             .stApp {{
+                background-size: 100% auto;
                 padding-left: 20px;
                 padding-right: 20px;
             }}
@@ -71,6 +74,7 @@ with open("label_encoder.pkl", "rb") as f:
 # Title and intro
 st.markdown("""<h1 style='color:black;'>🐾 What's your spirit animal?</h1>""", unsafe_allow_html=True)
 st.markdown("<p style='color:black;'>Ever wondered which animal shares your vibe? Let’s take a walk and find out!</p>", unsafe_allow_html=True)
+
 
 # Enneagram explanations
 enneagram_types = {
