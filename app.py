@@ -61,7 +61,7 @@ with open("label_encoder.pkl", "rb") as f:
     label_encoder = pickle.load(f)
 
 # Title
-st.markdown("""<h1 style='color:black;'>🐾 Spirit Animal Finder</h1>""", unsafe_allow_html=True)
+st.markdown("""<h1 style='color:black;'>🐾 What's your spirit animal?</h1>""", unsafe_allow_html=True)
 st.markdown("<p style='color:black;'>Answer the questions to discover your spirit animal.</p>", unsafe_allow_html=True)
 
 # Enneagram explanations
@@ -204,7 +204,7 @@ else:
 
         if profile:
             st.markdown("<div class='result-box result-layout'>", unsafe_allow_html=True)
-            st.markdown(f"<h2 style='color:black;'>🌟 Your Spirit Animal is: {predicted_animal}</h2>", unsafe_allow_html=True)
+            st.markdown(f"<h2 style='color:black;'>🦜 Your Spirit Animal is: {predicted_animal}</h2>", unsafe_allow_html=True)
             if os.path.exists(image_path):
                 st.image(image_path, width=250)
             st.markdown(profile["description"], unsafe_allow_html=True)
