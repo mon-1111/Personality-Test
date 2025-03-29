@@ -214,7 +214,7 @@ else:
             enneagram_explained = "<br>".join([f"{enneagram_types.get(e.strip(), '')}" for e in enneagram_parts])
 
             content = f"""
-            <div class='result-box result-layout'>
+            
                 <h2 style='color:black;'>🌟 Your Spirit Animal is: {predicted_animal}</h2>
                 {img_html}
                 {profile['description']}<br><br>
