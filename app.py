@@ -3,8 +3,6 @@ import numpy as np
 import pickle
 import base64
 import os
-from PIL import Image, ImageDraw, ImageFont
-from io import BytesIO
 
 # Page configuration
 st.set_page_config(page_title="What's your spirit animal?", page_icon="🐾", layout="centered")
@@ -61,81 +59,8 @@ enneagram_types = {
     "9": "Type 9 – The Peacemaker: easygoing, accommodating, reassuring."
 }
 
-# Animal profiles
-animal_profiles = {
-    "Bear": {
-        "description": "You share qualities with the <strong>Bear</strong> — introspective, grounded, and protective. You thrive in calm, reflective environments and prefer solitude or deep one-on-one connections. You tend to think before acting and offer wisdom to others. You positively impact your world by providing emotional depth, quiet leadership, and a reliable presence.",
-        "ocean": "High Introversion, High Conscientiousness",
-        "mbti": "INFJ / INTJ",
-        "enneagram": "4 or 5"
-    },
-    "Cat": {
-        "description": "You align with the <strong>Cat</strong> — independent, curious, and highly perceptive. You thrive when given freedom and space, and you prefer doing things in your own unique way. You tend to quietly observe before engaging and positively impact others by modeling authenticity, insight, and quiet resilience.",
-        "ocean": "High Openness, Moderate Introversion",
-        "mbti": "ISFP / INTP",
-        "enneagram": "5 or 9"
-    },
-    "Dolphin": {
-        "description": "You resonate with the <strong>Dolphin</strong> — playful, empathetic, and social. You thrive in group settings and prefer uplifting, meaningful interactions. You tend to bring people together and lighten the mood. You positively impact others by spreading joy, empathy, and creative energy.",
-        "ocean": "High Extraversion, High Agreeableness",
-        "mbti": "ESFP / ENFP",
-        "enneagram": "2 or 7"
-    },
-    "Elephant": {
-        "description": "You reflect the <strong>Elephant</strong> — wise, nurturing, and loyal. You thrive in structured, value-based environments and prefer taking care of others and being part of a close-knit group. You tend to lead with quiet strength and positively impact the world by being dependable and emotionally intelligent.",
-        "ocean": "High Agreeableness, High Conscientiousness",
-        "mbti": "ISFJ / ESFJ",
-        "enneagram": "2 or 6"
-    },
-    "Fox": {
-        "description": "You embody the <strong>Fox</strong> — clever, quick-witted, and adaptable. You thrive in fast-paced environments and prefer to stay ahead of the curve. You tend to think on your feet and positively impact others by offering solutions, strategy, and creative insight.",
-        "ocean": "High Openness, High Conscientiousness",
-        "mbti": "ENTP / INTJ",
-        "enneagram": "3 or 5"
-    },
-    "Lion": {
-        "description": "You are the <strong>Lion</strong> — courageous, strong, and born to lead. You thrive in situations where bold decisions are needed and prefer to take initiative. You tend to inspire others through confidence and vision. You positively impact others by leading with integrity and bravery.",
-        "ocean": "High Extraversion, Low Neuroticism",
-        "mbti": "ENTJ / ESTJ",
-        "enneagram": "3 or 8"
-    },
-    "Owl": {
-        "description": "You connect with the <strong>Owl</strong> — wise, observant, and thoughtful. You thrive in intellectual and philosophical spaces and prefer deep conversations over small talk. You tend to seek truth and knowledge. You positively impact others by offering insight, perspective, and clarity.",
-        "ocean": "High Openness, High Introversion",
-        "mbti": "INTP / INTJ",
-        "enneagram": "5"
-    },
-    "Parrot": {
-        "description": "You align with the <strong>Parrot</strong> — expressive, social, and enthusiastic. You thrive in vibrant environments and prefer to be surrounded by people and ideas. You tend to uplift those around you and positively impact others with your energy, humor, and optimism.",
-        "ocean": "High Extraversion, High Openness",
-        "mbti": "ESFP / ENFP",
-        "enneagram": "7 or 2"
-    },
-    "Snake": {
-        "description": "You share traits with the <strong>Snake</strong> — intuitive, calm, and transformative. You thrive in introspective and emotionally rich environments and prefer deep reflection. You tend to sense what others miss and positively impact others by encouraging healing, transformation, and growth.",
-        "ocean": "High Introversion, Moderate Openness",
-        "mbti": "INFJ / INFP",
-        "enneagram": "4"
-    },
-    "Tiger": {
-        "description": "You resonate with the <strong>Tiger</strong> — fierce, passionate, and bold. You thrive in high-energy settings and prefer to chase goals fearlessly. You tend to act decisively and inspire with intensity. You positively impact others through your strength, determination, and fearlessness.",
-        "ocean": "High Extraversion, Moderate Neuroticism",
-        "mbti": "ESTP / ENFP",
-        "enneagram": "7 or 8"
-    },
-    "Turtle": {
-        "description": "You identify with the <strong>Turtle</strong> — patient, wise, and grounded. You thrive in peaceful, steady environments and prefer a slower, thoughtful pace. You tend to be a grounding presence. You positively impact others through stability, calm, and timeless wisdom.",
-        "ocean": "High Agreeableness, Low Extraversion",
-        "mbti": "ISFJ / ISTJ",
-        "enneagram": "9"
-    },
-    "Wolf": {
-        "description": "You reflect the <strong>Wolf</strong> — loyal, intuitive, and community-focused. You thrive in strong, supportive networks and prefer meaningful collaboration. You tend to sense emotional dynamics well. You positively impact others by fostering connection, loyalty, and collective strength.",
-        "ocean": "Balanced Extraversion and Agreeableness",
-        "mbti": "INFJ / ENFJ",
-        "enneagram": "6 or 9"
-    }
-}
+# Animal profiles (add your full dictionary here, same as before)
+from animal_profiles import animal_profiles
 
 # Questions and options
 questions = [
@@ -186,10 +111,9 @@ else:
         profile = animal_profiles.get(predicted_animal, None)
         image_path = f"images/{predicted_animal.lower()}.png"
 
-        if profile:
+        if profile and os.path.exists(image_path):
             with open(image_path, "rb") as img_file:
-                img_data = img_file.read()
-                encoded_img = base64.b64encode(img_data).decode()
+                encoded_img = base64.b64encode(img_file.read()).decode()
 
             enneagram_parts = profile['enneagram'].split(" or ")
             enneagram_explained = "<br>".join([f"{enneagram_types.get(e.strip(), '')}" for e in enneagram_parts])
@@ -210,57 +134,6 @@ else:
             </div>
             """
             st.markdown(result_html, unsafe_allow_html=True)
-
-            # 🖼️ Create result image using PIL
-            if os.path.exists(image_path):
-                animal_img = Image.open(image_path).convert("RGBA")
-                animal_img = animal_img.resize((300, 300))
-
-                # Create a white canvas
-                width, height = 800, 600
-                result_img = Image.new("RGBA", (width, height), (255, 255, 255, 255))
-                draw = ImageDraw.Draw(result_img)
-
-                # Paste image
-                result_img.paste(animal_img, (30, 30), animal_img)
-
-                # Fonts
-                try:
-                    font_title = ImageFont.truetype("arial.ttf", 28)
-                    font_text = ImageFont.truetype("arial.ttf", 20)
-                except:
-                    font_title = font_text = None
-
-                # Add text
-                x_offset = 350
-                y_offset = 30
-                draw.text((x_offset, y_offset), f"Your Spirit Animal is: {predicted_animal}", fill="black", font=font_title)
-                y_offset += 40
-                draw.text((x_offset, y_offset), profile["description"], fill="black", font=font_text)
-                y_offset += 120
-
-                draw.text((x_offset, y_offset), f"OCEAN Traits: {profile['ocean']}", fill="black", font=font_text)
-                y_offset += 30
-                draw.text((x_offset, y_offset), f"MBTI Match: {profile['mbti']}", fill="black", font=font_text)
-                y_offset += 30
-
-                draw.text((x_offset, y_offset), "Enneagram Type:", fill="black", font=font_text)
-                y_offset += 30
-                for e in enneagram_parts:
-                    draw.text((x_offset + 20, y_offset), enneagram_types.get(e.strip(), ""), fill="black", font=font_text)
-                    y_offset += 25
-
-                # Convert to BytesIO for download
-                buffer = BytesIO()
-                result_img.save(buffer, format="PNG")
-                buffer.seek(0)
-
-                st.download_button(
-                    label="📥 Download My Result as Image",
-                    data=buffer,
-                    file_name=f"{predicted_animal.lower()}_result.png",
-                    mime="image/png"
-                )
 
     if st.button("Restart Quiz 🔄"):
         st.session_state.current_q = 0
