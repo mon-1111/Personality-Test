@@ -175,7 +175,7 @@ if st.session_state.current_q < len(questions):
         st.session_state.current_q += 1
         st.rerun()
 else:
-    st.markdown("### 🎉 You're almost there!")
+    st.markdown("### 🌿 You're almost there!")
     if st.button("Discover My Spirit Animal 🐾"):
         input_array = np.array([st.session_state.answers])
         prediction = model.predict(input_array)[0]
@@ -192,7 +192,7 @@ else:
             enneagram_explained = "<br>".join([f"{enneagram_types.get(e.strip(), '')}" for e in enneagram_parts])
 
             result_html = f"""
-            <h2 style='color:black;'>🌟 Your Spirit Animal is: {predicted_animal}</h2>
+            <h2 style='color:black;'>🌟 Your Spirit Animal is: {predicted_animal} 🌟</h2>
             <div style="display: flex; align-items: center; gap: 2rem; flex-wrap: wrap; justify-content: flex-start;">
                 <img src="data:image/png;base64,{encoded_img}" style="width:220px; border-radius:10px;" />
                 <div style="flex: 1; min-width: 250px; text-align: left;">
