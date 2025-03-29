@@ -7,11 +7,12 @@ import os
 # Page configuration
 st.set_page_config(page_title="What's your spirit animal?", page_icon="🐾", layout="centered")
 
-# Function to set background
+# Function to set background with mobile responsiveness
 def set_background(image_path):
     with open(image_path, "rb") as f:
         data = f.read()
     encoded = base64.b64encode(data).decode()
+
     st.markdown(
         f"""
         <style>
@@ -20,13 +21,38 @@ def set_background(image_path):
             background-size: cover;
             background-position: center;
             background-attachment: fixed;
+            padding-left: 50px;
+            padding-right: 50px;
         }}
+
         div[class*="stRadio"] label, div[class*="stRadio"] div, .stMarkdown, .stTitle, .stHeading {{
             color: black !important;
         }}
-        .stApp {{
-            padding-left: 50px;  
-            padding-right: 50px;
+
+        @media (max-width: 768px) {{
+            .stApp {{
+                padding-left: 20px;
+                padding-right: 20px;
+            }}
+
+            h2 {{
+                font-size: 1.3rem;
+            }}
+
+            img {{
+                max-width: 100% !important;
+                height: auto !important;
+            }}
+
+            .result-flex {{
+                flex-direction: column !important;
+                align-items: center !important;
+                text-align: center !important;
+            }}
+
+            .result-flex img {{
+                margin-bottom: 1rem;
+            }}
         }}
         </style>
         """,
@@ -42,7 +68,7 @@ with open("rf_model.pkl", "rb") as f:
 with open("label_encoder.pkl", "rb") as f:
     label_encoder = pickle.load(f)
 
-# Title
+# Title and intro
 st.markdown("""<h1 style='color:black;'>🐾 What's your spirit animal?</h1>""", unsafe_allow_html=True)
 st.markdown("<p style='color:black;'>Ever wondered which animal shares your vibe? Let’s take a walk and find out!</p>", unsafe_allow_html=True)
 
