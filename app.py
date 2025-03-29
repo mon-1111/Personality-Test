@@ -137,7 +137,7 @@ animal_profiles = {
 
 # Questions and options
 questions = [
-    "You begin your solo hike just after sunrise. What’s going through your head as you walk?",
+    "You begin your solo hike at sunrise. What’s going through your head as you walk?",
     "You see a deer on the trail. What do you do?",
     "You sit beside a river. What color do you see in the reflection?",
     "You’re tasked with assembling a tent you’ve never used before. What do you do first?",
