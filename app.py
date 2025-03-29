@@ -7,55 +7,26 @@ import os
 # Page configuration
 st.set_page_config(page_title="What's your spirit animal?", page_icon="🐾", layout="centered")
 
-# Function to set background with mobile responsiveness
+# Function to set background (original version without mobile tweaks)
 def set_background(image_path):
     with open(image_path, "rb") as f:
         data = f.read()
     encoded = base64.b64encode(data).decode()
-
     st.markdown(
         f"""
         <style>
         .stApp {{
             background-image: url("data:image/png;base64,{encoded}");
-            background-size: contain;
-            background-position: top center;
-            background-repeat: no-repeat;
-            background-attachment: scroll;
-            min-height: 100vh;
-            padding-left: 50px;
-            padding-right: 50px;
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
         }}
-
         div[class*="stRadio"] label, div[class*="stRadio"] div, .stMarkdown, .stTitle, .stHeading {{
             color: black !important;
         }}
-
-        @media (max-width: 768px) {{
-            .stApp {{
-                background-size: 100% auto;
-                padding-left: 20px;
-                padding-right: 20px;
-            }}
-
-            h2 {{
-                font-size: 1.3rem;
-            }}
-
-            img {{
-                max-width: 100% !important;
-                height: auto !important;
-            }}
-
-            .result-flex {{
-                flex-direction: column !important;
-                align-items: center !important;
-                text-align: center !important;
-            }}
-
-            .result-flex img {{
-                margin-bottom: 1rem;
-            }}
+        .stApp {{
+            padding-left: 50px;  
+            padding-right: 50px;
         }}
         </style>
         """,
