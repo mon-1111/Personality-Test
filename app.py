@@ -44,7 +44,7 @@ with open("label_encoder.pkl", "rb") as f:
 
 # Title
 st.markdown("""<h1 style='color:black;'>🐾 What's your spirit animal?</h1>""", unsafe_allow_html=True)
-st.markdown("<p style='color:black;'>Ever wondered which animal shares your vibe? Let’s find out!.</p>", unsafe_allow_html=True)
+st.markdown("<p style='color:black;'>Ever wondered which animal shares your vibe? Let’s take a walk and find out!.</p>", unsafe_allow_html=True)
 
 # Enneagram explanations
 enneagram_types = {
