@@ -212,7 +212,7 @@ else:
             st.markdown(f"<strong>MBTI Match:</strong> {profile['mbti']}<br>", unsafe_allow_html=True)
 
             enneagram_parts = profile['enneagram'].split(" or ")
-            enneagram_explained = "<br>".join([f"{e}: {enneagram_types.get(e.strip(), '')}" for e in enneagram_parts])
+            enneagram_explained = "<br>".join([f"{enneagram_types.get(e.strip(), '')}" for e in enneagram_parts])
             st.markdown(f"<strong>Enneagram Type:</strong><br>{enneagram_explained}</div>", unsafe_allow_html=True)
 
     if st.button("Restart Quiz 🔄"):
