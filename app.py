@@ -42,11 +42,6 @@ def set_background(image_path):
             align-items: center;
             justify-content: center;
         }}
-        .result-img {{
-            max-width: 250px;
-            border-radius: 10px;
-            margin-bottom: 1rem;
-        }}
         </style>
         """,
         unsafe_allow_html=True
@@ -208,16 +203,18 @@ else:
             if os.path.exists(image_path):
                 with open(image_path, "rb") as img_file:
                     encoded_img = base64.b64encode(img_file.read()).decode()
-                    img_html = f"<img src='data:image/png;base64,{encoded_img}' style='width:220px; border-radius:10px; margin-bottom:1rem;'/>"
 
             enneagram_parts = profile['enneagram'].split(" or ")
             enneagram_explained = "<br>".join([f"{enneagram_types.get(e.strip(), '')}" for e in enneagram_parts])
 
             content = f"""
-            
+            <div class='result-box'>
                 <h2 style='color:black;'>🌟 Your Spirit Animal is: {predicted_animal}</h2>
-                {img_html}
-                {profile['description']}<br><br>
+                <div style="display: flex; align-items: center; gap: 2rem; flex-wrap: wrap; justify-content: center;">
+                    <img src='data:image/png;base64,{encoded_img}' style='width:220px; border-radius:10px;'/>
+                    <div style='flex: 1; min-width: 250px; text-align: left;'>{profile['description']}</div>
+                </div>
+                <br>
                 <strong>OCEAN Traits:</strong> {profile['ocean']}<br>
                 <strong>MBTI Match:</strong> {profile['mbti']}<br>
                 <strong>Enneagram Type:</strong><br>{enneagram_explained}
