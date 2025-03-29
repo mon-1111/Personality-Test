@@ -59,7 +59,7 @@ enneagram_types = {
     "9": "Type 9 – The Peacemaker: easygoing, accommodating, reassuring."
 }
 
-# Animal profiles (same as in your provided code)
+# Animal profiles
 animal_profiles = {
     "Bear": {
         "description": "You share qualities with the <strong>Bear</strong> — introspective, grounded, and protective. You thrive in calm, reflective environments and prefer solitude or deep one-on-one connections. You tend to think before acting and offer wisdom to others. You positively impact your world by providing emotional depth, quiet leadership, and a reliable presence.",
