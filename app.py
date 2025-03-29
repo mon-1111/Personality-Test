@@ -3,6 +3,8 @@ import numpy as np
 import pickle
 import base64
 import os
+from PIL import Image, ImageDraw, ImageFont
+from io import BytesIO
 
 # Page configuration
 st.set_page_config(page_title="What's your spirit animal?", page_icon="🐾", layout="centered")
@@ -209,13 +211,56 @@ else:
             """
             st.markdown(result_html, unsafe_allow_html=True)
 
-            # Download button for result image
-            st.download_button(
-                label="🔹 Download Animal Image",
-                data=img_data,
-                file_name=f"{predicted_animal.lower()}_spirit_animal.png",
-                mime="image/png"
-            )
+            # 🖼️ Create result image using PIL
+            if os.path.exists(image_path):
+                animal_img = Image.open(image_path).convert("RGBA")
+                animal_img = animal_img.resize((300, 300))
+
+                # Create a white canvas
+                width, height = 800, 600
+                result_img = Image.new("RGBA", (width, height), (255, 255, 255, 255))
+                draw = ImageDraw.Draw(result_img)
+
+                # Paste image
+                result_img.paste(animal_img, (30, 30), animal_img)
+
+                # Fonts
+                try:
+                    font_title = ImageFont.truetype("arial.ttf", 28)
+                    font_text = ImageFont.truetype("arial.ttf", 20)
+                except:
+                    font_title = font_text = None
+
+                # Add text
+                x_offset = 350
+                y_offset = 30
+                draw.text((x_offset, y_offset), f"Your Spirit Animal is: {predicted_animal}", fill="black", font=font_title)
+                y_offset += 40
+                draw.text((x_offset, y_offset), profile["description"], fill="black", font=font_text)
+                y_offset += 120
+
+                draw.text((x_offset, y_offset), f"OCEAN Traits: {profile['ocean']}", fill="black", font=font_text)
+                y_offset += 30
+                draw.text((x_offset, y_offset), f"MBTI Match: {profile['mbti']}", fill="black", font=font_text)
+                y_offset += 30
+
+                draw.text((x_offset, y_offset), "Enneagram Type:", fill="black", font=font_text)
+                y_offset += 30
+                for e in enneagram_parts:
+                    draw.text((x_offset + 20, y_offset), enneagram_types.get(e.strip(), ""), fill="black", font=font_text)
+                    y_offset += 25
+
+                # Convert to BytesIO for download
+                buffer = BytesIO()
+                result_img.save(buffer, format="PNG")
+                buffer.seek(0)
+
+                st.download_button(
+                    label="📥 Download My Result as Image",
+                    data=buffer,
+                    file_name=f"{predicted_animal.lower()}_result.png",
+                    mime="image/png"
+                )
 
     if st.button("Restart Quiz 🔄"):
         st.session_state.current_q = 0
